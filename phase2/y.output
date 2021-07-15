@@ -1,0 +1,1568 @@
+Grammar
+
+    0 $accept: prog_start $end
+
+    1 prog_start: functions
+
+    2 functions: %empty
+    3          | function functions
+
+    4 function: FUNCTION ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+
+    5 declaration: identifiers COLON INTEGER
+    6            | identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER
+
+    7 declarations: %empty
+    8             | declaration SEMICOLON declarations
+
+    9 identifiers: ident
+   10            | ident COMMA identifiers
+
+   11 statements: statement SEMICOLON statements
+   12           | statement SEMICOLON
+
+   13 statement: var ASSIGN expression
+   14          | READ vars
+   15          | WRITE vars
+   16          | CONTINUE
+   17          | RETURN expression
+   18          | IF boolExp THEN statements elseStatement ENDIF
+   19          | WHILE boolExp BEGINLOOP statements ENDLOOP
+   20          | DO BEGINLOOP statements ENDLOOP WHILE boolExp
+   21          | FOREACH ident IN ident BEGINLOOP statements ENDLOOP
+
+   22 elseStatement: %empty
+   23              | ELSE statements
+
+   24 var: ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+   25    | ident
+
+   26 vars: var
+   27     | var COMMA vars
+
+   28 expression: multExp
+   29           | multExp ADD expression
+   30           | multExp SUB expression
+
+   31 expressions: %empty
+   32            | expression COMMA expressions
+   33            | expression
+
+   34 multExp: term
+   35        | term MULT multExp
+   36        | term DIV multExp
+   37        | term MOD multExp
+
+   38 term: var
+   39     | SUB var
+   40     | NUMBER
+   41     | SUB NUMBER
+   42     | L_PAREN expression R_PAREN
+   43     | SUB L_PAREN expression R_PAREN
+   44     | ident L_PAREN expressions R_PAREN
+
+   45 comp: LTE
+   46     | GTE
+   47     | EQ
+   48     | NEQ
+   49     | LT
+   50     | GT
+
+   51 boolExp: raExp
+   52        | raExp OR boolExp
+
+   53 raExp: reExp
+   54      | reExp AND raExp
+
+   55 reExp: NOT rExp1
+   56      | rExp1
+
+   57 rExp1: expression comp expression
+   58      | TRUE
+   59      | FALSE
+   60      | L_PAREN boolExp R_PAREN
+
+   61 ident: IDENT
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+IDENT (258) 61
+NUMBER (259) 6 40 41
+FUNCTION (260) 4
+BEGIN_PARAMS (261) 4
+END_PARAMS (262) 4
+BEGIN_LOCALS (263) 4
+END_LOCALS (264) 4
+BEGIN_BODY (265) 4
+END_BODY (266) 4
+INTEGER (267) 5 6
+ARRAY (268) 6
+OF (269) 6
+IF (270) 18
+THEN (271) 18
+ENDIF (272) 18
+ELSE (273) 23
+WHILE (274) 19 20
+DO (275) 20
+FOREACH (276) 21
+IN (277) 21
+BEGINLOOP (278) 19 20 21
+ENDLOOP (279) 19 20 21
+CONTINUE (280) 16
+READ (281) 14
+WRITE (282) 15
+TRUE (283) 58
+FALSE (284) 59
+RETURN (285) 17
+L_PAREN (286) 42 43 44 60
+R_PAREN (287) 42 43 44 60
+L_SQUARE_BRACKET (288) 6 24
+R_SQUARE_BRACKET (289) 6 24
+COLON (290) 5 6
+SEMICOLON (291) 4 8 11 12
+COMMA (292) 10 27 32
+SUB (293) 30 39 41 43
+ADD (294) 29
+MULT (295) 35
+DIV (296) 36
+MOD (297) 37
+EQ (298) 47
+NEQ (299) 48
+LT (300) 49
+GT (301) 50
+LTE (302) 45
+GTE (303) 46
+AND (304) 54
+OR (305) 52
+ASSIGN (306) 13
+NOT (307) 55
+
+
+Nonterminals, with rules where they appear
+
+$accept (53)
+    on left: 0
+prog_start (54)
+    on left: 1, on right: 0
+functions (55)
+    on left: 2 3, on right: 1 3
+function (56)
+    on left: 4, on right: 3
+declaration (57)
+    on left: 5 6, on right: 8
+declarations (58)
+    on left: 7 8, on right: 4 8
+identifiers (59)
+    on left: 9 10, on right: 5 6 10
+statements (60)
+    on left: 11 12, on right: 4 11 18 19 20 21 23
+statement (61)
+    on left: 13 14 15 16 17 18 19 20 21, on right: 11 12
+elseStatement (62)
+    on left: 22 23, on right: 18
+var (63)
+    on left: 24 25, on right: 13 26 27 38 39
+vars (64)
+    on left: 26 27, on right: 14 15 27
+expression (65)
+    on left: 28 29 30, on right: 13 17 24 29 30 32 33 42 43 57
+expressions (66)
+    on left: 31 32 33, on right: 32 44
+multExp (67)
+    on left: 34 35 36 37, on right: 28 29 30 35 36 37
+term (68)
+    on left: 38 39 40 41 42 43 44, on right: 34 35 36 37
+comp (69)
+    on left: 45 46 47 48 49 50, on right: 57
+boolExp (70)
+    on left: 51 52, on right: 18 19 20 52 60
+raExp (71)
+    on left: 53 54, on right: 51 52 54
+reExp (72)
+    on left: 55 56, on right: 53 54
+rExp1 (73)
+    on left: 57 58 59 60, on right: 55 56
+ident (74)
+    on left: 61, on right: 4 9 10 21 24 25 44
+
+
+State 0
+
+    0 $accept: . prog_start $end
+
+    FUNCTION  shift, and go to state 1
+
+    $default  reduce using rule 2 (functions)
+
+    prog_start  go to state 2
+    functions   go to state 3
+    function    go to state 4
+
+
+State 1
+
+    4 function: FUNCTION . ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+
+    IDENT  shift, and go to state 5
+
+    ident  go to state 6
+
+
+State 2
+
+    0 $accept: prog_start . $end
+
+    $end  shift, and go to state 7
+
+
+State 3
+
+    1 prog_start: functions .
+
+    $default  reduce using rule 1 (prog_start)
+
+
+State 4
+
+    3 functions: function . functions
+
+    FUNCTION  shift, and go to state 1
+
+    $default  reduce using rule 2 (functions)
+
+    functions  go to state 8
+    function   go to state 4
+
+
+State 5
+
+   61 ident: IDENT .
+
+    $default  reduce using rule 61 (ident)
+
+
+State 6
+
+    4 function: FUNCTION ident . SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+
+    SEMICOLON  shift, and go to state 9
+
+
+State 7
+
+    0 $accept: prog_start $end .
+
+    $default  accept
+
+
+State 8
+
+    3 functions: function functions .
+
+    $default  reduce using rule 3 (functions)
+
+
+State 9
+
+    4 function: FUNCTION ident SEMICOLON . BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+
+    BEGIN_PARAMS  shift, and go to state 10
+
+
+State 10
+
+    4 function: FUNCTION ident SEMICOLON BEGIN_PARAMS . declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+
+    IDENT  shift, and go to state 5
+
+    $default  reduce using rule 7 (declarations)
+
+    declaration   go to state 11
+    declarations  go to state 12
+    identifiers   go to state 13
+    ident         go to state 14
+
+
+State 11
+
+    8 declarations: declaration . SEMICOLON declarations
+
+    SEMICOLON  shift, and go to state 15
+
+
+State 12
+
+    4 function: FUNCTION ident SEMICOLON BEGIN_PARAMS declarations . END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+
+    END_PARAMS  shift, and go to state 16
+
+
+State 13
+
+    5 declaration: identifiers . COLON INTEGER
+    6            | identifiers . COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER
+
+    COLON  shift, and go to state 17
+
+
+State 14
+
+    9 identifiers: ident .
+   10            | ident . COMMA identifiers
+
+    COMMA  shift, and go to state 18
+
+    $default  reduce using rule 9 (identifiers)
+
+
+State 15
+
+    8 declarations: declaration SEMICOLON . declarations
+
+    IDENT  shift, and go to state 5
+
+    $default  reduce using rule 7 (declarations)
+
+    declaration   go to state 11
+    declarations  go to state 19
+    identifiers   go to state 13
+    ident         go to state 14
+
+
+State 16
+
+    4 function: FUNCTION ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS . BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+
+    BEGIN_LOCALS  shift, and go to state 20
+
+
+State 17
+
+    5 declaration: identifiers COLON . INTEGER
+    6            | identifiers COLON . ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER
+
+    INTEGER  shift, and go to state 21
+    ARRAY    shift, and go to state 22
+
+
+State 18
+
+   10 identifiers: ident COMMA . identifiers
+
+    IDENT  shift, and go to state 5
+
+    identifiers  go to state 23
+    ident        go to state 14
+
+
+State 19
+
+    8 declarations: declaration SEMICOLON declarations .
+
+    $default  reduce using rule 8 (declarations)
+
+
+State 20
+
+    4 function: FUNCTION ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS . declarations END_LOCALS BEGIN_BODY statements END_BODY
+
+    IDENT  shift, and go to state 5
+
+    $default  reduce using rule 7 (declarations)
+
+    declaration   go to state 11
+    declarations  go to state 24
+    identifiers   go to state 13
+    ident         go to state 14
+
+
+State 21
+
+    5 declaration: identifiers COLON INTEGER .
+
+    $default  reduce using rule 5 (declaration)
+
+
+State 22
+
+    6 declaration: identifiers COLON ARRAY . L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER
+
+    L_SQUARE_BRACKET  shift, and go to state 25
+
+
+State 23
+
+   10 identifiers: ident COMMA identifiers .
+
+    $default  reduce using rule 10 (identifiers)
+
+
+State 24
+
+    4 function: FUNCTION ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations . END_LOCALS BEGIN_BODY statements END_BODY
+
+    END_LOCALS  shift, and go to state 26
+
+
+State 25
+
+    6 declaration: identifiers COLON ARRAY L_SQUARE_BRACKET . NUMBER R_SQUARE_BRACKET OF INTEGER
+
+    NUMBER  shift, and go to state 27
+
+
+State 26
+
+    4 function: FUNCTION ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS . BEGIN_BODY statements END_BODY
+
+    BEGIN_BODY  shift, and go to state 28
+
+
+State 27
+
+    6 declaration: identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER . R_SQUARE_BRACKET OF INTEGER
+
+    R_SQUARE_BRACKET  shift, and go to state 29
+
+
+State 28
+
+    4 function: FUNCTION ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY . statements END_BODY
+
+    IDENT     shift, and go to state 5
+    IF        shift, and go to state 30
+    WHILE     shift, and go to state 31
+    DO        shift, and go to state 32
+    FOREACH   shift, and go to state 33
+    CONTINUE  shift, and go to state 34
+    READ      shift, and go to state 35
+    WRITE     shift, and go to state 36
+    RETURN    shift, and go to state 37
+
+    statements  go to state 38
+    statement   go to state 39
+    var         go to state 40
+    ident       go to state 41
+
+
+State 29
+
+    6 declaration: identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET . OF INTEGER
+
+    OF  shift, and go to state 42
+
+
+State 30
+
+   18 statement: IF . boolExp THEN statements elseStatement ENDIF
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    TRUE     shift, and go to state 44
+    FALSE    shift, and go to state 45
+    L_PAREN  shift, and go to state 46
+    SUB      shift, and go to state 47
+    NOT      shift, and go to state 48
+
+    var         go to state 49
+    expression  go to state 50
+    multExp     go to state 51
+    term        go to state 52
+    boolExp     go to state 53
+    raExp       go to state 54
+    reExp       go to state 55
+    rExp1       go to state 56
+    ident       go to state 57
+
+
+State 31
+
+   19 statement: WHILE . boolExp BEGINLOOP statements ENDLOOP
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    TRUE     shift, and go to state 44
+    FALSE    shift, and go to state 45
+    L_PAREN  shift, and go to state 46
+    SUB      shift, and go to state 47
+    NOT      shift, and go to state 48
+
+    var         go to state 49
+    expression  go to state 50
+    multExp     go to state 51
+    term        go to state 52
+    boolExp     go to state 58
+    raExp       go to state 54
+    reExp       go to state 55
+    rExp1       go to state 56
+    ident       go to state 57
+
+
+State 32
+
+   20 statement: DO . BEGINLOOP statements ENDLOOP WHILE boolExp
+
+    BEGINLOOP  shift, and go to state 59
+
+
+State 33
+
+   21 statement: FOREACH . ident IN ident BEGINLOOP statements ENDLOOP
+
+    IDENT  shift, and go to state 5
+
+    ident  go to state 60
+
+
+State 34
+
+   16 statement: CONTINUE .
+
+    $default  reduce using rule 16 (statement)
+
+
+State 35
+
+   14 statement: READ . vars
+
+    IDENT  shift, and go to state 5
+
+    var    go to state 61
+    vars   go to state 62
+    ident  go to state 41
+
+
+State 36
+
+   15 statement: WRITE . vars
+
+    IDENT  shift, and go to state 5
+
+    var    go to state 61
+    vars   go to state 63
+    ident  go to state 41
+
+
+State 37
+
+   17 statement: RETURN . expression
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var         go to state 49
+    expression  go to state 65
+    multExp     go to state 51
+    term        go to state 52
+    ident       go to state 57
+
+
+State 38
+
+    4 function: FUNCTION ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements . END_BODY
+
+    END_BODY  shift, and go to state 66
+
+
+State 39
+
+   11 statements: statement . SEMICOLON statements
+   12           | statement . SEMICOLON
+
+    SEMICOLON  shift, and go to state 67
+
+
+State 40
+
+   13 statement: var . ASSIGN expression
+
+    ASSIGN  shift, and go to state 68
+
+
+State 41
+
+   24 var: ident . L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+   25    | ident .
+
+    L_SQUARE_BRACKET  shift, and go to state 69
+
+    $default  reduce using rule 25 (var)
+
+
+State 42
+
+    6 declaration: identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF . INTEGER
+
+    INTEGER  shift, and go to state 70
+
+
+State 43
+
+   40 term: NUMBER .
+
+    $default  reduce using rule 40 (term)
+
+
+State 44
+
+   58 rExp1: TRUE .
+
+    $default  reduce using rule 58 (rExp1)
+
+
+State 45
+
+   59 rExp1: FALSE .
+
+    $default  reduce using rule 59 (rExp1)
+
+
+State 46
+
+   42 term: L_PAREN . expression R_PAREN
+   60 rExp1: L_PAREN . boolExp R_PAREN
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    TRUE     shift, and go to state 44
+    FALSE    shift, and go to state 45
+    L_PAREN  shift, and go to state 46
+    SUB      shift, and go to state 47
+    NOT      shift, and go to state 48
+
+    var         go to state 49
+    expression  go to state 71
+    multExp     go to state 51
+    term        go to state 52
+    boolExp     go to state 72
+    raExp       go to state 54
+    reExp       go to state 55
+    rExp1       go to state 56
+    ident       go to state 57
+
+
+State 47
+
+   39 term: SUB . var
+   41     | SUB . NUMBER
+   43     | SUB . L_PAREN expression R_PAREN
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 73
+    L_PAREN  shift, and go to state 74
+
+    var    go to state 75
+    ident  go to state 41
+
+
+State 48
+
+   55 reExp: NOT . rExp1
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    TRUE     shift, and go to state 44
+    FALSE    shift, and go to state 45
+    L_PAREN  shift, and go to state 46
+    SUB      shift, and go to state 47
+
+    var         go to state 49
+    expression  go to state 50
+    multExp     go to state 51
+    term        go to state 52
+    rExp1       go to state 76
+    ident       go to state 57
+
+
+State 49
+
+   38 term: var .
+
+    $default  reduce using rule 38 (term)
+
+
+State 50
+
+   57 rExp1: expression . comp expression
+
+    EQ   shift, and go to state 77
+    NEQ  shift, and go to state 78
+    LT   shift, and go to state 79
+    GT   shift, and go to state 80
+    LTE  shift, and go to state 81
+    GTE  shift, and go to state 82
+
+    comp  go to state 83
+
+
+State 51
+
+   28 expression: multExp .
+   29           | multExp . ADD expression
+   30           | multExp . SUB expression
+
+    SUB  shift, and go to state 84
+    ADD  shift, and go to state 85
+
+    $default  reduce using rule 28 (expression)
+
+
+State 52
+
+   34 multExp: term .
+   35        | term . MULT multExp
+   36        | term . DIV multExp
+   37        | term . MOD multExp
+
+    MULT  shift, and go to state 86
+    DIV   shift, and go to state 87
+    MOD   shift, and go to state 88
+
+    $default  reduce using rule 34 (multExp)
+
+
+State 53
+
+   18 statement: IF boolExp . THEN statements elseStatement ENDIF
+
+    THEN  shift, and go to state 89
+
+
+State 54
+
+   51 boolExp: raExp .
+   52        | raExp . OR boolExp
+
+    OR  shift, and go to state 90
+
+    $default  reduce using rule 51 (boolExp)
+
+
+State 55
+
+   53 raExp: reExp .
+   54      | reExp . AND raExp
+
+    AND  shift, and go to state 91
+
+    $default  reduce using rule 53 (raExp)
+
+
+State 56
+
+   56 reExp: rExp1 .
+
+    $default  reduce using rule 56 (reExp)
+
+
+State 57
+
+   24 var: ident . L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+   25    | ident .
+   44 term: ident . L_PAREN expressions R_PAREN
+
+    L_PAREN           shift, and go to state 92
+    L_SQUARE_BRACKET  shift, and go to state 69
+
+    $default  reduce using rule 25 (var)
+
+
+State 58
+
+   19 statement: WHILE boolExp . BEGINLOOP statements ENDLOOP
+
+    BEGINLOOP  shift, and go to state 93
+
+
+State 59
+
+   20 statement: DO BEGINLOOP . statements ENDLOOP WHILE boolExp
+
+    IDENT     shift, and go to state 5
+    IF        shift, and go to state 30
+    WHILE     shift, and go to state 31
+    DO        shift, and go to state 32
+    FOREACH   shift, and go to state 33
+    CONTINUE  shift, and go to state 34
+    READ      shift, and go to state 35
+    WRITE     shift, and go to state 36
+    RETURN    shift, and go to state 37
+
+    statements  go to state 94
+    statement   go to state 39
+    var         go to state 40
+    ident       go to state 41
+
+
+State 60
+
+   21 statement: FOREACH ident . IN ident BEGINLOOP statements ENDLOOP
+
+    IN  shift, and go to state 95
+
+
+State 61
+
+   26 vars: var .
+   27     | var . COMMA vars
+
+    COMMA  shift, and go to state 96
+
+    $default  reduce using rule 26 (vars)
+
+
+State 62
+
+   14 statement: READ vars .
+
+    $default  reduce using rule 14 (statement)
+
+
+State 63
+
+   15 statement: WRITE vars .
+
+    $default  reduce using rule 15 (statement)
+
+
+State 64
+
+   42 term: L_PAREN . expression R_PAREN
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var         go to state 49
+    expression  go to state 97
+    multExp     go to state 51
+    term        go to state 52
+    ident       go to state 57
+
+
+State 65
+
+   17 statement: RETURN expression .
+
+    $default  reduce using rule 17 (statement)
+
+
+State 66
+
+    4 function: FUNCTION ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY .
+
+    $default  reduce using rule 4 (function)
+
+
+State 67
+
+   11 statements: statement SEMICOLON . statements
+   12           | statement SEMICOLON .
+
+    IDENT     shift, and go to state 5
+    IF        shift, and go to state 30
+    WHILE     shift, and go to state 31
+    DO        shift, and go to state 32
+    FOREACH   shift, and go to state 33
+    CONTINUE  shift, and go to state 34
+    READ      shift, and go to state 35
+    WRITE     shift, and go to state 36
+    RETURN    shift, and go to state 37
+
+    $default  reduce using rule 12 (statements)
+
+    statements  go to state 98
+    statement   go to state 39
+    var         go to state 40
+    ident       go to state 41
+
+
+State 68
+
+   13 statement: var ASSIGN . expression
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var         go to state 49
+    expression  go to state 99
+    multExp     go to state 51
+    term        go to state 52
+    ident       go to state 57
+
+
+State 69
+
+   24 var: ident L_SQUARE_BRACKET . expression R_SQUARE_BRACKET
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var         go to state 49
+    expression  go to state 100
+    multExp     go to state 51
+    term        go to state 52
+    ident       go to state 57
+
+
+State 70
+
+    6 declaration: identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER .
+
+    $default  reduce using rule 6 (declaration)
+
+
+State 71
+
+   42 term: L_PAREN expression . R_PAREN
+   57 rExp1: expression . comp expression
+
+    R_PAREN  shift, and go to state 101
+    EQ       shift, and go to state 77
+    NEQ      shift, and go to state 78
+    LT       shift, and go to state 79
+    GT       shift, and go to state 80
+    LTE      shift, and go to state 81
+    GTE      shift, and go to state 82
+
+    comp  go to state 83
+
+
+State 72
+
+   60 rExp1: L_PAREN boolExp . R_PAREN
+
+    R_PAREN  shift, and go to state 102
+
+
+State 73
+
+   41 term: SUB NUMBER .
+
+    $default  reduce using rule 41 (term)
+
+
+State 74
+
+   43 term: SUB L_PAREN . expression R_PAREN
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var         go to state 49
+    expression  go to state 103
+    multExp     go to state 51
+    term        go to state 52
+    ident       go to state 57
+
+
+State 75
+
+   39 term: SUB var .
+
+    $default  reduce using rule 39 (term)
+
+
+State 76
+
+   55 reExp: NOT rExp1 .
+
+    $default  reduce using rule 55 (reExp)
+
+
+State 77
+
+   47 comp: EQ .
+
+    $default  reduce using rule 47 (comp)
+
+
+State 78
+
+   48 comp: NEQ .
+
+    $default  reduce using rule 48 (comp)
+
+
+State 79
+
+   49 comp: LT .
+
+    $default  reduce using rule 49 (comp)
+
+
+State 80
+
+   50 comp: GT .
+
+    $default  reduce using rule 50 (comp)
+
+
+State 81
+
+   45 comp: LTE .
+
+    $default  reduce using rule 45 (comp)
+
+
+State 82
+
+   46 comp: GTE .
+
+    $default  reduce using rule 46 (comp)
+
+
+State 83
+
+   57 rExp1: expression comp . expression
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var         go to state 49
+    expression  go to state 104
+    multExp     go to state 51
+    term        go to state 52
+    ident       go to state 57
+
+
+State 84
+
+   30 expression: multExp SUB . expression
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var         go to state 49
+    expression  go to state 105
+    multExp     go to state 51
+    term        go to state 52
+    ident       go to state 57
+
+
+State 85
+
+   29 expression: multExp ADD . expression
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var         go to state 49
+    expression  go to state 106
+    multExp     go to state 51
+    term        go to state 52
+    ident       go to state 57
+
+
+State 86
+
+   35 multExp: term MULT . multExp
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var      go to state 49
+    multExp  go to state 107
+    term     go to state 52
+    ident    go to state 57
+
+
+State 87
+
+   36 multExp: term DIV . multExp
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var      go to state 49
+    multExp  go to state 108
+    term     go to state 52
+    ident    go to state 57
+
+
+State 88
+
+   37 multExp: term MOD . multExp
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    var      go to state 49
+    multExp  go to state 109
+    term     go to state 52
+    ident    go to state 57
+
+
+State 89
+
+   18 statement: IF boolExp THEN . statements elseStatement ENDIF
+
+    IDENT     shift, and go to state 5
+    IF        shift, and go to state 30
+    WHILE     shift, and go to state 31
+    DO        shift, and go to state 32
+    FOREACH   shift, and go to state 33
+    CONTINUE  shift, and go to state 34
+    READ      shift, and go to state 35
+    WRITE     shift, and go to state 36
+    RETURN    shift, and go to state 37
+
+    statements  go to state 110
+    statement   go to state 39
+    var         go to state 40
+    ident       go to state 41
+
+
+State 90
+
+   52 boolExp: raExp OR . boolExp
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    TRUE     shift, and go to state 44
+    FALSE    shift, and go to state 45
+    L_PAREN  shift, and go to state 46
+    SUB      shift, and go to state 47
+    NOT      shift, and go to state 48
+
+    var         go to state 49
+    expression  go to state 50
+    multExp     go to state 51
+    term        go to state 52
+    boolExp     go to state 111
+    raExp       go to state 54
+    reExp       go to state 55
+    rExp1       go to state 56
+    ident       go to state 57
+
+
+State 91
+
+   54 raExp: reExp AND . raExp
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    TRUE     shift, and go to state 44
+    FALSE    shift, and go to state 45
+    L_PAREN  shift, and go to state 46
+    SUB      shift, and go to state 47
+    NOT      shift, and go to state 48
+
+    var         go to state 49
+    expression  go to state 50
+    multExp     go to state 51
+    term        go to state 52
+    raExp       go to state 112
+    reExp       go to state 55
+    rExp1       go to state 56
+    ident       go to state 57
+
+
+State 92
+
+   44 term: ident L_PAREN . expressions R_PAREN
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    $default  reduce using rule 31 (expressions)
+
+    var          go to state 49
+    expression   go to state 113
+    expressions  go to state 114
+    multExp      go to state 51
+    term         go to state 52
+    ident        go to state 57
+
+
+State 93
+
+   19 statement: WHILE boolExp BEGINLOOP . statements ENDLOOP
+
+    IDENT     shift, and go to state 5
+    IF        shift, and go to state 30
+    WHILE     shift, and go to state 31
+    DO        shift, and go to state 32
+    FOREACH   shift, and go to state 33
+    CONTINUE  shift, and go to state 34
+    READ      shift, and go to state 35
+    WRITE     shift, and go to state 36
+    RETURN    shift, and go to state 37
+
+    statements  go to state 115
+    statement   go to state 39
+    var         go to state 40
+    ident       go to state 41
+
+
+State 94
+
+   20 statement: DO BEGINLOOP statements . ENDLOOP WHILE boolExp
+
+    ENDLOOP  shift, and go to state 116
+
+
+State 95
+
+   21 statement: FOREACH ident IN . ident BEGINLOOP statements ENDLOOP
+
+    IDENT  shift, and go to state 5
+
+    ident  go to state 117
+
+
+State 96
+
+   27 vars: var COMMA . vars
+
+    IDENT  shift, and go to state 5
+
+    var    go to state 61
+    vars   go to state 118
+    ident  go to state 41
+
+
+State 97
+
+   42 term: L_PAREN expression . R_PAREN
+
+    R_PAREN  shift, and go to state 101
+
+
+State 98
+
+   11 statements: statement SEMICOLON statements .
+
+    $default  reduce using rule 11 (statements)
+
+
+State 99
+
+   13 statement: var ASSIGN expression .
+
+    $default  reduce using rule 13 (statement)
+
+
+State 100
+
+   24 var: ident L_SQUARE_BRACKET expression . R_SQUARE_BRACKET
+
+    R_SQUARE_BRACKET  shift, and go to state 119
+
+
+State 101
+
+   42 term: L_PAREN expression R_PAREN .
+
+    $default  reduce using rule 42 (term)
+
+
+State 102
+
+   60 rExp1: L_PAREN boolExp R_PAREN .
+
+    $default  reduce using rule 60 (rExp1)
+
+
+State 103
+
+   43 term: SUB L_PAREN expression . R_PAREN
+
+    R_PAREN  shift, and go to state 120
+
+
+State 104
+
+   57 rExp1: expression comp expression .
+
+    $default  reduce using rule 57 (rExp1)
+
+
+State 105
+
+   30 expression: multExp SUB expression .
+
+    $default  reduce using rule 30 (expression)
+
+
+State 106
+
+   29 expression: multExp ADD expression .
+
+    $default  reduce using rule 29 (expression)
+
+
+State 107
+
+   35 multExp: term MULT multExp .
+
+    $default  reduce using rule 35 (multExp)
+
+
+State 108
+
+   36 multExp: term DIV multExp .
+
+    $default  reduce using rule 36 (multExp)
+
+
+State 109
+
+   37 multExp: term MOD multExp .
+
+    $default  reduce using rule 37 (multExp)
+
+
+State 110
+
+   18 statement: IF boolExp THEN statements . elseStatement ENDIF
+
+    ELSE  shift, and go to state 121
+
+    $default  reduce using rule 22 (elseStatement)
+
+    elseStatement  go to state 122
+
+
+State 111
+
+   52 boolExp: raExp OR boolExp .
+
+    $default  reduce using rule 52 (boolExp)
+
+
+State 112
+
+   54 raExp: reExp AND raExp .
+
+    $default  reduce using rule 54 (raExp)
+
+
+State 113
+
+   32 expressions: expression . COMMA expressions
+   33            | expression .
+
+    COMMA  shift, and go to state 123
+
+    $default  reduce using rule 33 (expressions)
+
+
+State 114
+
+   44 term: ident L_PAREN expressions . R_PAREN
+
+    R_PAREN  shift, and go to state 124
+
+
+State 115
+
+   19 statement: WHILE boolExp BEGINLOOP statements . ENDLOOP
+
+    ENDLOOP  shift, and go to state 125
+
+
+State 116
+
+   20 statement: DO BEGINLOOP statements ENDLOOP . WHILE boolExp
+
+    WHILE  shift, and go to state 126
+
+
+State 117
+
+   21 statement: FOREACH ident IN ident . BEGINLOOP statements ENDLOOP
+
+    BEGINLOOP  shift, and go to state 127
+
+
+State 118
+
+   27 vars: var COMMA vars .
+
+    $default  reduce using rule 27 (vars)
+
+
+State 119
+
+   24 var: ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET .
+
+    $default  reduce using rule 24 (var)
+
+
+State 120
+
+   43 term: SUB L_PAREN expression R_PAREN .
+
+    $default  reduce using rule 43 (term)
+
+
+State 121
+
+   23 elseStatement: ELSE . statements
+
+    IDENT     shift, and go to state 5
+    IF        shift, and go to state 30
+    WHILE     shift, and go to state 31
+    DO        shift, and go to state 32
+    FOREACH   shift, and go to state 33
+    CONTINUE  shift, and go to state 34
+    READ      shift, and go to state 35
+    WRITE     shift, and go to state 36
+    RETURN    shift, and go to state 37
+
+    statements  go to state 128
+    statement   go to state 39
+    var         go to state 40
+    ident       go to state 41
+
+
+State 122
+
+   18 statement: IF boolExp THEN statements elseStatement . ENDIF
+
+    ENDIF  shift, and go to state 129
+
+
+State 123
+
+   32 expressions: expression COMMA . expressions
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    L_PAREN  shift, and go to state 64
+    SUB      shift, and go to state 47
+
+    $default  reduce using rule 31 (expressions)
+
+    var          go to state 49
+    expression   go to state 113
+    expressions  go to state 130
+    multExp      go to state 51
+    term         go to state 52
+    ident        go to state 57
+
+
+State 124
+
+   44 term: ident L_PAREN expressions R_PAREN .
+
+    $default  reduce using rule 44 (term)
+
+
+State 125
+
+   19 statement: WHILE boolExp BEGINLOOP statements ENDLOOP .
+
+    $default  reduce using rule 19 (statement)
+
+
+State 126
+
+   20 statement: DO BEGINLOOP statements ENDLOOP WHILE . boolExp
+
+    IDENT    shift, and go to state 5
+    NUMBER   shift, and go to state 43
+    TRUE     shift, and go to state 44
+    FALSE    shift, and go to state 45
+    L_PAREN  shift, and go to state 46
+    SUB      shift, and go to state 47
+    NOT      shift, and go to state 48
+
+    var         go to state 49
+    expression  go to state 50
+    multExp     go to state 51
+    term        go to state 52
+    boolExp     go to state 131
+    raExp       go to state 54
+    reExp       go to state 55
+    rExp1       go to state 56
+    ident       go to state 57
+
+
+State 127
+
+   21 statement: FOREACH ident IN ident BEGINLOOP . statements ENDLOOP
+
+    IDENT     shift, and go to state 5
+    IF        shift, and go to state 30
+    WHILE     shift, and go to state 31
+    DO        shift, and go to state 32
+    FOREACH   shift, and go to state 33
+    CONTINUE  shift, and go to state 34
+    READ      shift, and go to state 35
+    WRITE     shift, and go to state 36
+    RETURN    shift, and go to state 37
+
+    statements  go to state 132
+    statement   go to state 39
+    var         go to state 40
+    ident       go to state 41
+
+
+State 128
+
+   23 elseStatement: ELSE statements .
+
+    $default  reduce using rule 23 (elseStatement)
+
+
+State 129
+
+   18 statement: IF boolExp THEN statements elseStatement ENDIF .
+
+    $default  reduce using rule 18 (statement)
+
+
+State 130
+
+   32 expressions: expression COMMA expressions .
+
+    $default  reduce using rule 32 (expressions)
+
+
+State 131
+
+   20 statement: DO BEGINLOOP statements ENDLOOP WHILE boolExp .
+
+    $default  reduce using rule 20 (statement)
+
+
+State 132
+
+   21 statement: FOREACH ident IN ident BEGINLOOP statements . ENDLOOP
+
+    ENDLOOP  shift, and go to state 133
+
+
+State 133
+
+   21 statement: FOREACH ident IN ident BEGINLOOP statements ENDLOOP .
+
+    $default  reduce using rule 21 (statement)
