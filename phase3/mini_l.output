@@ -1,0 +1,1823 @@
+Terminals unused in grammar
+
+   FOREACH
+   IN
+
+
+Grammar
+
+    0 $accept: prog $end
+
+    1 prog: func prog
+    2     | %empty
+
+    3 func: FUNCTION ident SEMICOLON BEGIN_PARAMS func1 END_PARAMS BEGIN_LOCALS func1 END_LOCALS BEGIN_BODY stmt1 END_BODY
+
+    4 ident: IDENT
+
+    5 func1: decl SEMICOLON func1
+    6      | %empty
+
+    7 decl: IDENT decl1 COLON array INTEGER
+
+    8 decl1: COMMA IDENT decl1
+    9      | %empty
+
+   10 array: ARRAY L_SQUARE_BRACKET number R_SQUARE_BRACKET OF
+   11      | %empty
+
+   12 stmt: asn_stmt
+   13     | if_stmt
+   14     | while_stmt
+   15     | do_stmt
+   16     | read_stmt
+   17     | write_stmt
+   18     | cont_stmt
+   19     | ret_stmt
+
+   20 stmt1: stmt SEMICOLON stmt1
+   21      | %empty
+
+   22 asn_stmt: var ASSIGN expr
+
+   23 if_stmt: IF bool_expr THEN stmt1 else_stmt ENDIF
+
+   24 else_stmt: ELSE stmt1
+   25          | %empty
+
+   26 while_stmt: WHILE bool_expr BEGINLOOP stmt1 ENDLOOP
+
+   27 do_stmt: DO BEGINLOOP stmt1 ENDLOOP WHILE bool_expr
+
+   28 read_stmt: READ var r_stmt
+
+   29 r_stmt: COMMA var r_stmt
+   30       | %empty
+
+   31 write_stmt: WRITE var w_stmt
+
+   32 w_stmt: COMMA var w_stmt
+   33       | %empty
+
+   34 cont_stmt: CONTINUE
+
+   35 ret_stmt: RETURN expr
+
+   36 bool_expr: and_expr or_expr
+
+   37 or_expr: OR and_expr or_expr
+   38        | %empty
+
+   39 and_expr: rel_expr and_expr1
+
+   40 and_expr1: AND rel_expr and_expr1
+   41          | %empty
+
+   42 rel_expr: rel_expr1
+   43         | NOT rel_expr1
+
+   44 rel_expr1: expr comp expr
+   45          | TRUE
+   46          | FALSE
+   47          | L_PAREN bool_expr R_PAREN
+
+   48 comp: EQ
+   49     | NEQ
+   50     | LT
+   51     | GT
+   52     | GTE
+   53     | LTE
+
+   54 expr: multi_expr expr1
+
+   55 expr1: ADD multi_expr expr1
+   56      | SUB multi_expr expr1
+   57      | %empty
+
+   58 multi_expr: term multi_expr1
+
+   59 multi_expr1: MULT term multi_expr1
+   60            | DIV term multi_expr1
+   61            | MOD term multi_expr1
+   62            | %empty
+
+   63 term: term2
+   64     | SUB term2
+   65     | IDENT L_PAREN term3 R_PAREN
+
+   66 term2: var
+   67      | number
+   68      | L_PAREN expr R_PAREN
+
+   69 term3: expr COMMA term3
+   70      | expr
+   71      | %empty
+
+   72 var: IDENT var2
+
+   73 var2: L_SQUARE_BRACKET expr R_SQUARE_BRACKET
+   74     | %empty
+
+   75 number: NUMBER
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+FUNCTION (258) 3
+BEGIN_PARAMS (259) 3
+END_PARAMS (260) 3
+BEGIN_LOCALS (261) 3
+END_LOCALS (262) 3
+BEGIN_BODY (263) 3
+END_BODY (264) 3
+INTEGER (265) 7
+ARRAY (266) 10
+OF (267) 10
+IF (268) 23
+THEN (269) 23
+ENDIF (270) 23
+ELSE (271) 24
+WHILE (272) 26 27
+DO (273) 27
+FOREACH (274)
+IN (275)
+BEGINLOOP (276) 26 27
+ENDLOOP (277) 26 27
+CONTINUE (278) 34
+READ (279) 28
+WRITE (280) 31
+TRUE (281) 45
+FALSE (282) 46
+SEMICOLON (283) 3 5 20
+COLON (284) 7
+COMMA (285) 8 29 32 69
+L_PAREN (286) 47 65 68
+R_PAREN (287) 47 65 68
+L_SQUARE_BRACKET (288) 10 73
+R_SQUARE_BRACKET (289) 10 73
+RETURN (290) 35
+NUMBER (291) 75
+IDENT (292) 4 7 8 65 72
+MULT (293) 59
+DIV (294) 60
+MOD (295) 61
+ADD (296) 55
+SUB (297) 56 64
+LT (298) 50
+LTE (299) 53
+GT (300) 51
+GTE (301) 52
+EQ (302) 48
+NEQ (303) 49
+AND (304) 40
+OR (305) 37
+NOT (306) 43
+ASSIGN (307) 22
+
+
+Nonterminals, with rules where they appear
+
+$accept (53)
+    on left: 0
+prog (54)
+    on left: 1 2, on right: 0 1
+func (55)
+    on left: 3, on right: 1
+ident (56)
+    on left: 4, on right: 3
+func1 (57)
+    on left: 5 6, on right: 3 5
+decl (58)
+    on left: 7, on right: 5
+decl1 (59)
+    on left: 8 9, on right: 7 8
+array (60)
+    on left: 10 11, on right: 7
+stmt (61)
+    on left: 12 13 14 15 16 17 18 19, on right: 20
+stmt1 (62)
+    on left: 20 21, on right: 3 20 23 24 26 27
+asn_stmt (63)
+    on left: 22, on right: 12
+if_stmt (64)
+    on left: 23, on right: 13
+else_stmt (65)
+    on left: 24 25, on right: 23
+while_stmt (66)
+    on left: 26, on right: 14
+do_stmt (67)
+    on left: 27, on right: 15
+read_stmt (68)
+    on left: 28, on right: 16
+r_stmt (69)
+    on left: 29 30, on right: 28 29
+write_stmt (70)
+    on left: 31, on right: 17
+w_stmt (71)
+    on left: 32 33, on right: 31 32
+cont_stmt (72)
+    on left: 34, on right: 18
+ret_stmt (73)
+    on left: 35, on right: 19
+bool_expr (74)
+    on left: 36, on right: 23 26 27 47
+or_expr (75)
+    on left: 37 38, on right: 36 37
+and_expr (76)
+    on left: 39, on right: 36 37
+and_expr1 (77)
+    on left: 40 41, on right: 39 40
+rel_expr (78)
+    on left: 42 43, on right: 39 40
+rel_expr1 (79)
+    on left: 44 45 46 47, on right: 42 43
+comp (80)
+    on left: 48 49 50 51 52 53, on right: 44
+expr (81)
+    on left: 54, on right: 22 35 44 68 69 70 73
+expr1 (82)
+    on left: 55 56 57, on right: 54 55 56
+multi_expr (83)
+    on left: 58, on right: 54 55 56
+multi_expr1 (84)
+    on left: 59 60 61 62, on right: 58 59 60 61
+term (85)
+    on left: 63 64 65, on right: 58 59 60 61
+term2 (86)
+    on left: 66 67 68, on right: 63 64
+term3 (87)
+    on left: 69 70 71, on right: 65 69
+var (88)
+    on left: 72, on right: 22 28 29 31 32 66
+var2 (89)
+    on left: 73 74, on right: 72
+number (90)
+    on left: 75, on right: 10 67
+
+
+State 0
+
+    0 $accept: . prog $end
+
+    FUNCTION  shift, and go to state 1
+
+    $default  reduce using rule 2 (prog)
+
+    prog  go to state 2
+    func  go to state 3
+
+
+State 1
+
+    3 func: FUNCTION . ident SEMICOLON BEGIN_PARAMS func1 END_PARAMS BEGIN_LOCALS func1 END_LOCALS BEGIN_BODY stmt1 END_BODY
+
+    IDENT  shift, and go to state 4
+
+    ident  go to state 5
+
+
+State 2
+
+    0 $accept: prog . $end
+
+    $end  shift, and go to state 6
+
+
+State 3
+
+    1 prog: func . prog
+
+    FUNCTION  shift, and go to state 1
+
+    $default  reduce using rule 2 (prog)
+
+    prog  go to state 7
+    func  go to state 3
+
+
+State 4
+
+    4 ident: IDENT .
+
+    $default  reduce using rule 4 (ident)
+
+
+State 5
+
+    3 func: FUNCTION ident . SEMICOLON BEGIN_PARAMS func1 END_PARAMS BEGIN_LOCALS func1 END_LOCALS BEGIN_BODY stmt1 END_BODY
+
+    SEMICOLON  shift, and go to state 8
+
+
+State 6
+
+    0 $accept: prog $end .
+
+    $default  accept
+
+
+State 7
+
+    1 prog: func prog .
+
+    $default  reduce using rule 1 (prog)
+
+
+State 8
+
+    3 func: FUNCTION ident SEMICOLON . BEGIN_PARAMS func1 END_PARAMS BEGIN_LOCALS func1 END_LOCALS BEGIN_BODY stmt1 END_BODY
+
+    BEGIN_PARAMS  shift, and go to state 9
+
+
+State 9
+
+    3 func: FUNCTION ident SEMICOLON BEGIN_PARAMS . func1 END_PARAMS BEGIN_LOCALS func1 END_LOCALS BEGIN_BODY stmt1 END_BODY
+
+    IDENT  shift, and go to state 10
+
+    $default  reduce using rule 6 (func1)
+
+    func1  go to state 11
+    decl   go to state 12
+
+
+State 10
+
+    7 decl: IDENT . decl1 COLON array INTEGER
+
+    COMMA  shift, and go to state 13
+
+    $default  reduce using rule 9 (decl1)
+
+    decl1  go to state 14
+
+
+State 11
+
+    3 func: FUNCTION ident SEMICOLON BEGIN_PARAMS func1 . END_PARAMS BEGIN_LOCALS func1 END_LOCALS BEGIN_BODY stmt1 END_BODY
+
+    END_PARAMS  shift, and go to state 15
+
+
+State 12
+
+    5 func1: decl . SEMICOLON func1
+
+    SEMICOLON  shift, and go to state 16
+
+
+State 13
+
+    8 decl1: COMMA . IDENT decl1
+
+    IDENT  shift, and go to state 17
+
+
+State 14
+
+    7 decl: IDENT decl1 . COLON array INTEGER
+
+    COLON  shift, and go to state 18
+
+
+State 15
+
+    3 func: FUNCTION ident SEMICOLON BEGIN_PARAMS func1 END_PARAMS . BEGIN_LOCALS func1 END_LOCALS BEGIN_BODY stmt1 END_BODY
+
+    BEGIN_LOCALS  shift, and go to state 19
+
+
+State 16
+
+    5 func1: decl SEMICOLON . func1
+
+    IDENT  shift, and go to state 10
+
+    $default  reduce using rule 6 (func1)
+
+    func1  go to state 20
+    decl   go to state 12
+
+
+State 17
+
+    8 decl1: COMMA IDENT . decl1
+
+    COMMA  shift, and go to state 13
+
+    $default  reduce using rule 9 (decl1)
+
+    decl1  go to state 21
+
+
+State 18
+
+    7 decl: IDENT decl1 COLON . array INTEGER
+
+    ARRAY  shift, and go to state 22
+
+    $default  reduce using rule 11 (array)
+
+    array  go to state 23
+
+
+State 19
+
+    3 func: FUNCTION ident SEMICOLON BEGIN_PARAMS func1 END_PARAMS BEGIN_LOCALS . func1 END_LOCALS BEGIN_BODY stmt1 END_BODY
+
+    IDENT  shift, and go to state 10
+
+    $default  reduce using rule 6 (func1)
+
+    func1  go to state 24
+    decl   go to state 12
+
+
+State 20
+
+    5 func1: decl SEMICOLON func1 .
+
+    $default  reduce using rule 5 (func1)
+
+
+State 21
+
+    8 decl1: COMMA IDENT decl1 .
+
+    $default  reduce using rule 8 (decl1)
+
+
+State 22
+
+   10 array: ARRAY . L_SQUARE_BRACKET number R_SQUARE_BRACKET OF
+
+    L_SQUARE_BRACKET  shift, and go to state 25
+
+
+State 23
+
+    7 decl: IDENT decl1 COLON array . INTEGER
+
+    INTEGER  shift, and go to state 26
+
+
+State 24
+
+    3 func: FUNCTION ident SEMICOLON BEGIN_PARAMS func1 END_PARAMS BEGIN_LOCALS func1 . END_LOCALS BEGIN_BODY stmt1 END_BODY
+
+    END_LOCALS  shift, and go to state 27
+
+
+State 25
+
+   10 array: ARRAY L_SQUARE_BRACKET . number R_SQUARE_BRACKET OF
+
+    NUMBER  shift, and go to state 28
+
+    number  go to state 29
+
+
+State 26
+
+    7 decl: IDENT decl1 COLON array INTEGER .
+
+    $default  reduce using rule 7 (decl)
+
+
+State 27
+
+    3 func: FUNCTION ident SEMICOLON BEGIN_PARAMS func1 END_PARAMS BEGIN_LOCALS func1 END_LOCALS . BEGIN_BODY stmt1 END_BODY
+
+    BEGIN_BODY  shift, and go to state 30
+
+
+State 28
+
+   75 number: NUMBER .
+
+    $default  reduce using rule 75 (number)
+
+
+State 29
+
+   10 array: ARRAY L_SQUARE_BRACKET number . R_SQUARE_BRACKET OF
+
+    R_SQUARE_BRACKET  shift, and go to state 31
+
+
+State 30
+
+    3 func: FUNCTION ident SEMICOLON BEGIN_PARAMS func1 END_PARAMS BEGIN_LOCALS func1 END_LOCALS BEGIN_BODY . stmt1 END_BODY
+
+    IF        shift, and go to state 32
+    WHILE     shift, and go to state 33
+    DO        shift, and go to state 34
+    CONTINUE  shift, and go to state 35
+    READ      shift, and go to state 36
+    WRITE     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    IDENT     shift, and go to state 39
+
+    $default  reduce using rule 21 (stmt1)
+
+    stmt        go to state 40
+    stmt1       go to state 41
+    asn_stmt    go to state 42
+    if_stmt     go to state 43
+    while_stmt  go to state 44
+    do_stmt     go to state 45
+    read_stmt   go to state 46
+    write_stmt  go to state 47
+    cont_stmt   go to state 48
+    ret_stmt    go to state 49
+    var         go to state 50
+
+
+State 31
+
+   10 array: ARRAY L_SQUARE_BRACKET number R_SQUARE_BRACKET . OF
+
+    OF  shift, and go to state 51
+
+
+State 32
+
+   23 if_stmt: IF . bool_expr THEN stmt1 else_stmt ENDIF
+
+    TRUE     shift, and go to state 52
+    FALSE    shift, and go to state 53
+    L_PAREN  shift, and go to state 54
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+    NOT      shift, and go to state 57
+
+    bool_expr   go to state 58
+    and_expr    go to state 59
+    rel_expr    go to state 60
+    rel_expr1   go to state 61
+    expr        go to state 62
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 33
+
+   26 while_stmt: WHILE . bool_expr BEGINLOOP stmt1 ENDLOOP
+
+    TRUE     shift, and go to state 52
+    FALSE    shift, and go to state 53
+    L_PAREN  shift, and go to state 54
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+    NOT      shift, and go to state 57
+
+    bool_expr   go to state 68
+    and_expr    go to state 59
+    rel_expr    go to state 60
+    rel_expr1   go to state 61
+    expr        go to state 62
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 34
+
+   27 do_stmt: DO . BEGINLOOP stmt1 ENDLOOP WHILE bool_expr
+
+    BEGINLOOP  shift, and go to state 69
+
+
+State 35
+
+   34 cont_stmt: CONTINUE .
+
+    $default  reduce using rule 34 (cont_stmt)
+
+
+State 36
+
+   28 read_stmt: READ . var r_stmt
+
+    IDENT  shift, and go to state 39
+
+    var  go to state 70
+
+
+State 37
+
+   31 write_stmt: WRITE . var w_stmt
+
+    IDENT  shift, and go to state 39
+
+    var  go to state 71
+
+
+State 38
+
+   35 ret_stmt: RETURN . expr
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    expr        go to state 73
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 39
+
+   72 var: IDENT . var2
+
+    L_SQUARE_BRACKET  shift, and go to state 74
+
+    $default  reduce using rule 74 (var2)
+
+    var2  go to state 75
+
+
+State 40
+
+   20 stmt1: stmt . SEMICOLON stmt1
+
+    SEMICOLON  shift, and go to state 76
+
+
+State 41
+
+    3 func: FUNCTION ident SEMICOLON BEGIN_PARAMS func1 END_PARAMS BEGIN_LOCALS func1 END_LOCALS BEGIN_BODY stmt1 . END_BODY
+
+    END_BODY  shift, and go to state 77
+
+
+State 42
+
+   12 stmt: asn_stmt .
+
+    $default  reduce using rule 12 (stmt)
+
+
+State 43
+
+   13 stmt: if_stmt .
+
+    $default  reduce using rule 13 (stmt)
+
+
+State 44
+
+   14 stmt: while_stmt .
+
+    $default  reduce using rule 14 (stmt)
+
+
+State 45
+
+   15 stmt: do_stmt .
+
+    $default  reduce using rule 15 (stmt)
+
+
+State 46
+
+   16 stmt: read_stmt .
+
+    $default  reduce using rule 16 (stmt)
+
+
+State 47
+
+   17 stmt: write_stmt .
+
+    $default  reduce using rule 17 (stmt)
+
+
+State 48
+
+   18 stmt: cont_stmt .
+
+    $default  reduce using rule 18 (stmt)
+
+
+State 49
+
+   19 stmt: ret_stmt .
+
+    $default  reduce using rule 19 (stmt)
+
+
+State 50
+
+   22 asn_stmt: var . ASSIGN expr
+
+    ASSIGN  shift, and go to state 78
+
+
+State 51
+
+   10 array: ARRAY L_SQUARE_BRACKET number R_SQUARE_BRACKET OF .
+
+    $default  reduce using rule 10 (array)
+
+
+State 52
+
+   45 rel_expr1: TRUE .
+
+    $default  reduce using rule 45 (rel_expr1)
+
+
+State 53
+
+   46 rel_expr1: FALSE .
+
+    $default  reduce using rule 46 (rel_expr1)
+
+
+State 54
+
+   47 rel_expr1: L_PAREN . bool_expr R_PAREN
+   68 term2: L_PAREN . expr R_PAREN
+
+    TRUE     shift, and go to state 52
+    FALSE    shift, and go to state 53
+    L_PAREN  shift, and go to state 54
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+    NOT      shift, and go to state 57
+
+    bool_expr   go to state 79
+    and_expr    go to state 59
+    rel_expr    go to state 60
+    rel_expr1   go to state 61
+    expr        go to state 80
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 55
+
+   65 term: IDENT . L_PAREN term3 R_PAREN
+   72 var: IDENT . var2
+
+    L_PAREN           shift, and go to state 81
+    L_SQUARE_BRACKET  shift, and go to state 74
+
+    $default  reduce using rule 74 (var2)
+
+    var2  go to state 75
+
+
+State 56
+
+   64 term: SUB . term2
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 39
+
+    term2   go to state 82
+    var     go to state 66
+    number  go to state 67
+
+
+State 57
+
+   43 rel_expr: NOT . rel_expr1
+
+    TRUE     shift, and go to state 52
+    FALSE    shift, and go to state 53
+    L_PAREN  shift, and go to state 54
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    rel_expr1   go to state 83
+    expr        go to state 62
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 58
+
+   23 if_stmt: IF bool_expr . THEN stmt1 else_stmt ENDIF
+
+    THEN  shift, and go to state 84
+
+
+State 59
+
+   36 bool_expr: and_expr . or_expr
+
+    OR  shift, and go to state 85
+
+    $default  reduce using rule 38 (or_expr)
+
+    or_expr  go to state 86
+
+
+State 60
+
+   39 and_expr: rel_expr . and_expr1
+
+    AND  shift, and go to state 87
+
+    $default  reduce using rule 41 (and_expr1)
+
+    and_expr1  go to state 88
+
+
+State 61
+
+   42 rel_expr: rel_expr1 .
+
+    $default  reduce using rule 42 (rel_expr)
+
+
+State 62
+
+   44 rel_expr1: expr . comp expr
+
+    LT   shift, and go to state 89
+    LTE  shift, and go to state 90
+    GT   shift, and go to state 91
+    GTE  shift, and go to state 92
+    EQ   shift, and go to state 93
+    NEQ  shift, and go to state 94
+
+    comp  go to state 95
+
+
+State 63
+
+   54 expr: multi_expr . expr1
+
+    ADD  shift, and go to state 96
+    SUB  shift, and go to state 97
+
+    $default  reduce using rule 57 (expr1)
+
+    expr1  go to state 98
+
+
+State 64
+
+   58 multi_expr: term . multi_expr1
+
+    MULT  shift, and go to state 99
+    DIV   shift, and go to state 100
+    MOD   shift, and go to state 101
+
+    $default  reduce using rule 62 (multi_expr1)
+
+    multi_expr1  go to state 102
+
+
+State 65
+
+   63 term: term2 .
+
+    $default  reduce using rule 63 (term)
+
+
+State 66
+
+   66 term2: var .
+
+    $default  reduce using rule 66 (term2)
+
+
+State 67
+
+   67 term2: number .
+
+    $default  reduce using rule 67 (term2)
+
+
+State 68
+
+   26 while_stmt: WHILE bool_expr . BEGINLOOP stmt1 ENDLOOP
+
+    BEGINLOOP  shift, and go to state 103
+
+
+State 69
+
+   27 do_stmt: DO BEGINLOOP . stmt1 ENDLOOP WHILE bool_expr
+
+    IF        shift, and go to state 32
+    WHILE     shift, and go to state 33
+    DO        shift, and go to state 34
+    CONTINUE  shift, and go to state 35
+    READ      shift, and go to state 36
+    WRITE     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    IDENT     shift, and go to state 39
+
+    $default  reduce using rule 21 (stmt1)
+
+    stmt        go to state 40
+    stmt1       go to state 104
+    asn_stmt    go to state 42
+    if_stmt     go to state 43
+    while_stmt  go to state 44
+    do_stmt     go to state 45
+    read_stmt   go to state 46
+    write_stmt  go to state 47
+    cont_stmt   go to state 48
+    ret_stmt    go to state 49
+    var         go to state 50
+
+
+State 70
+
+   28 read_stmt: READ var . r_stmt
+
+    COMMA  shift, and go to state 105
+
+    $default  reduce using rule 30 (r_stmt)
+
+    r_stmt  go to state 106
+
+
+State 71
+
+   31 write_stmt: WRITE var . w_stmt
+
+    COMMA  shift, and go to state 107
+
+    $default  reduce using rule 33 (w_stmt)
+
+    w_stmt  go to state 108
+
+
+State 72
+
+   68 term2: L_PAREN . expr R_PAREN
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    expr        go to state 109
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 73
+
+   35 ret_stmt: RETURN expr .
+
+    $default  reduce using rule 35 (ret_stmt)
+
+
+State 74
+
+   73 var2: L_SQUARE_BRACKET . expr R_SQUARE_BRACKET
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    expr        go to state 110
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 75
+
+   72 var: IDENT var2 .
+
+    $default  reduce using rule 72 (var)
+
+
+State 76
+
+   20 stmt1: stmt SEMICOLON . stmt1
+
+    IF        shift, and go to state 32
+    WHILE     shift, and go to state 33
+    DO        shift, and go to state 34
+    CONTINUE  shift, and go to state 35
+    READ      shift, and go to state 36
+    WRITE     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    IDENT     shift, and go to state 39
+
+    $default  reduce using rule 21 (stmt1)
+
+    stmt        go to state 40
+    stmt1       go to state 111
+    asn_stmt    go to state 42
+    if_stmt     go to state 43
+    while_stmt  go to state 44
+    do_stmt     go to state 45
+    read_stmt   go to state 46
+    write_stmt  go to state 47
+    cont_stmt   go to state 48
+    ret_stmt    go to state 49
+    var         go to state 50
+
+
+State 77
+
+    3 func: FUNCTION ident SEMICOLON BEGIN_PARAMS func1 END_PARAMS BEGIN_LOCALS func1 END_LOCALS BEGIN_BODY stmt1 END_BODY .
+
+    $default  reduce using rule 3 (func)
+
+
+State 78
+
+   22 asn_stmt: var ASSIGN . expr
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    expr        go to state 112
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 79
+
+   47 rel_expr1: L_PAREN bool_expr . R_PAREN
+
+    R_PAREN  shift, and go to state 113
+
+
+State 80
+
+   44 rel_expr1: expr . comp expr
+   68 term2: L_PAREN expr . R_PAREN
+
+    R_PAREN  shift, and go to state 114
+    LT       shift, and go to state 89
+    LTE      shift, and go to state 90
+    GT       shift, and go to state 91
+    GTE      shift, and go to state 92
+    EQ       shift, and go to state 93
+    NEQ      shift, and go to state 94
+
+    comp  go to state 95
+
+
+State 81
+
+   65 term: IDENT L_PAREN . term3 R_PAREN
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    $default  reduce using rule 71 (term3)
+
+    expr        go to state 115
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    term3       go to state 116
+    var         go to state 66
+    number      go to state 67
+
+
+State 82
+
+   64 term: SUB term2 .
+
+    $default  reduce using rule 64 (term)
+
+
+State 83
+
+   43 rel_expr: NOT rel_expr1 .
+
+    $default  reduce using rule 43 (rel_expr)
+
+
+State 84
+
+   23 if_stmt: IF bool_expr THEN . stmt1 else_stmt ENDIF
+
+    IF        shift, and go to state 32
+    WHILE     shift, and go to state 33
+    DO        shift, and go to state 34
+    CONTINUE  shift, and go to state 35
+    READ      shift, and go to state 36
+    WRITE     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    IDENT     shift, and go to state 39
+
+    $default  reduce using rule 21 (stmt1)
+
+    stmt        go to state 40
+    stmt1       go to state 117
+    asn_stmt    go to state 42
+    if_stmt     go to state 43
+    while_stmt  go to state 44
+    do_stmt     go to state 45
+    read_stmt   go to state 46
+    write_stmt  go to state 47
+    cont_stmt   go to state 48
+    ret_stmt    go to state 49
+    var         go to state 50
+
+
+State 85
+
+   37 or_expr: OR . and_expr or_expr
+
+    TRUE     shift, and go to state 52
+    FALSE    shift, and go to state 53
+    L_PAREN  shift, and go to state 54
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+    NOT      shift, and go to state 57
+
+    and_expr    go to state 118
+    rel_expr    go to state 60
+    rel_expr1   go to state 61
+    expr        go to state 62
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 86
+
+   36 bool_expr: and_expr or_expr .
+
+    $default  reduce using rule 36 (bool_expr)
+
+
+State 87
+
+   40 and_expr1: AND . rel_expr and_expr1
+
+    TRUE     shift, and go to state 52
+    FALSE    shift, and go to state 53
+    L_PAREN  shift, and go to state 54
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+    NOT      shift, and go to state 57
+
+    rel_expr    go to state 119
+    rel_expr1   go to state 61
+    expr        go to state 62
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 88
+
+   39 and_expr: rel_expr and_expr1 .
+
+    $default  reduce using rule 39 (and_expr)
+
+
+State 89
+
+   50 comp: LT .
+
+    $default  reduce using rule 50 (comp)
+
+
+State 90
+
+   53 comp: LTE .
+
+    $default  reduce using rule 53 (comp)
+
+
+State 91
+
+   51 comp: GT .
+
+    $default  reduce using rule 51 (comp)
+
+
+State 92
+
+   52 comp: GTE .
+
+    $default  reduce using rule 52 (comp)
+
+
+State 93
+
+   48 comp: EQ .
+
+    $default  reduce using rule 48 (comp)
+
+
+State 94
+
+   49 comp: NEQ .
+
+    $default  reduce using rule 49 (comp)
+
+
+State 95
+
+   44 rel_expr1: expr comp . expr
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    expr        go to state 120
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 96
+
+   55 expr1: ADD . multi_expr expr1
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    multi_expr  go to state 121
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 97
+
+   56 expr1: SUB . multi_expr expr1
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    multi_expr  go to state 122
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 98
+
+   54 expr: multi_expr expr1 .
+
+    $default  reduce using rule 54 (expr)
+
+
+State 99
+
+   59 multi_expr1: MULT . term multi_expr1
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    term    go to state 123
+    term2   go to state 65
+    var     go to state 66
+    number  go to state 67
+
+
+State 100
+
+   60 multi_expr1: DIV . term multi_expr1
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    term    go to state 124
+    term2   go to state 65
+    var     go to state 66
+    number  go to state 67
+
+
+State 101
+
+   61 multi_expr1: MOD . term multi_expr1
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    term    go to state 125
+    term2   go to state 65
+    var     go to state 66
+    number  go to state 67
+
+
+State 102
+
+   58 multi_expr: term multi_expr1 .
+
+    $default  reduce using rule 58 (multi_expr)
+
+
+State 103
+
+   26 while_stmt: WHILE bool_expr BEGINLOOP . stmt1 ENDLOOP
+
+    IF        shift, and go to state 32
+    WHILE     shift, and go to state 33
+    DO        shift, and go to state 34
+    CONTINUE  shift, and go to state 35
+    READ      shift, and go to state 36
+    WRITE     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    IDENT     shift, and go to state 39
+
+    $default  reduce using rule 21 (stmt1)
+
+    stmt        go to state 40
+    stmt1       go to state 126
+    asn_stmt    go to state 42
+    if_stmt     go to state 43
+    while_stmt  go to state 44
+    do_stmt     go to state 45
+    read_stmt   go to state 46
+    write_stmt  go to state 47
+    cont_stmt   go to state 48
+    ret_stmt    go to state 49
+    var         go to state 50
+
+
+State 104
+
+   27 do_stmt: DO BEGINLOOP stmt1 . ENDLOOP WHILE bool_expr
+
+    ENDLOOP  shift, and go to state 127
+
+
+State 105
+
+   29 r_stmt: COMMA . var r_stmt
+
+    IDENT  shift, and go to state 39
+
+    var  go to state 128
+
+
+State 106
+
+   28 read_stmt: READ var r_stmt .
+
+    $default  reduce using rule 28 (read_stmt)
+
+
+State 107
+
+   32 w_stmt: COMMA . var w_stmt
+
+    IDENT  shift, and go to state 39
+
+    var  go to state 129
+
+
+State 108
+
+   31 write_stmt: WRITE var w_stmt .
+
+    $default  reduce using rule 31 (write_stmt)
+
+
+State 109
+
+   68 term2: L_PAREN expr . R_PAREN
+
+    R_PAREN  shift, and go to state 114
+
+
+State 110
+
+   73 var2: L_SQUARE_BRACKET expr . R_SQUARE_BRACKET
+
+    R_SQUARE_BRACKET  shift, and go to state 130
+
+
+State 111
+
+   20 stmt1: stmt SEMICOLON stmt1 .
+
+    $default  reduce using rule 20 (stmt1)
+
+
+State 112
+
+   22 asn_stmt: var ASSIGN expr .
+
+    $default  reduce using rule 22 (asn_stmt)
+
+
+State 113
+
+   47 rel_expr1: L_PAREN bool_expr R_PAREN .
+
+    $default  reduce using rule 47 (rel_expr1)
+
+
+State 114
+
+   68 term2: L_PAREN expr R_PAREN .
+
+    $default  reduce using rule 68 (term2)
+
+
+State 115
+
+   69 term3: expr . COMMA term3
+   70      | expr .
+
+    COMMA  shift, and go to state 131
+
+    $default  reduce using rule 70 (term3)
+
+
+State 116
+
+   65 term: IDENT L_PAREN term3 . R_PAREN
+
+    R_PAREN  shift, and go to state 132
+
+
+State 117
+
+   23 if_stmt: IF bool_expr THEN stmt1 . else_stmt ENDIF
+
+    ELSE  shift, and go to state 133
+
+    $default  reduce using rule 25 (else_stmt)
+
+    else_stmt  go to state 134
+
+
+State 118
+
+   37 or_expr: OR and_expr . or_expr
+
+    OR  shift, and go to state 85
+
+    $default  reduce using rule 38 (or_expr)
+
+    or_expr  go to state 135
+
+
+State 119
+
+   40 and_expr1: AND rel_expr . and_expr1
+
+    AND  shift, and go to state 87
+
+    $default  reduce using rule 41 (and_expr1)
+
+    and_expr1  go to state 136
+
+
+State 120
+
+   44 rel_expr1: expr comp expr .
+
+    $default  reduce using rule 44 (rel_expr1)
+
+
+State 121
+
+   55 expr1: ADD multi_expr . expr1
+
+    ADD  shift, and go to state 96
+    SUB  shift, and go to state 97
+
+    $default  reduce using rule 57 (expr1)
+
+    expr1  go to state 137
+
+
+State 122
+
+   56 expr1: SUB multi_expr . expr1
+
+    ADD  shift, and go to state 96
+    SUB  shift, and go to state 97
+
+    $default  reduce using rule 57 (expr1)
+
+    expr1  go to state 138
+
+
+State 123
+
+   59 multi_expr1: MULT term . multi_expr1
+
+    MULT  shift, and go to state 99
+    DIV   shift, and go to state 100
+    MOD   shift, and go to state 101
+
+    $default  reduce using rule 62 (multi_expr1)
+
+    multi_expr1  go to state 139
+
+
+State 124
+
+   60 multi_expr1: DIV term . multi_expr1
+
+    MULT  shift, and go to state 99
+    DIV   shift, and go to state 100
+    MOD   shift, and go to state 101
+
+    $default  reduce using rule 62 (multi_expr1)
+
+    multi_expr1  go to state 140
+
+
+State 125
+
+   61 multi_expr1: MOD term . multi_expr1
+
+    MULT  shift, and go to state 99
+    DIV   shift, and go to state 100
+    MOD   shift, and go to state 101
+
+    $default  reduce using rule 62 (multi_expr1)
+
+    multi_expr1  go to state 141
+
+
+State 126
+
+   26 while_stmt: WHILE bool_expr BEGINLOOP stmt1 . ENDLOOP
+
+    ENDLOOP  shift, and go to state 142
+
+
+State 127
+
+   27 do_stmt: DO BEGINLOOP stmt1 ENDLOOP . WHILE bool_expr
+
+    WHILE  shift, and go to state 143
+
+
+State 128
+
+   29 r_stmt: COMMA var . r_stmt
+
+    COMMA  shift, and go to state 105
+
+    $default  reduce using rule 30 (r_stmt)
+
+    r_stmt  go to state 144
+
+
+State 129
+
+   32 w_stmt: COMMA var . w_stmt
+
+    COMMA  shift, and go to state 107
+
+    $default  reduce using rule 33 (w_stmt)
+
+    w_stmt  go to state 145
+
+
+State 130
+
+   73 var2: L_SQUARE_BRACKET expr R_SQUARE_BRACKET .
+
+    $default  reduce using rule 73 (var2)
+
+
+State 131
+
+   69 term3: expr COMMA . term3
+
+    L_PAREN  shift, and go to state 72
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+
+    $default  reduce using rule 71 (term3)
+
+    expr        go to state 115
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    term3       go to state 146
+    var         go to state 66
+    number      go to state 67
+
+
+State 132
+
+   65 term: IDENT L_PAREN term3 R_PAREN .
+
+    $default  reduce using rule 65 (term)
+
+
+State 133
+
+   24 else_stmt: ELSE . stmt1
+
+    IF        shift, and go to state 32
+    WHILE     shift, and go to state 33
+    DO        shift, and go to state 34
+    CONTINUE  shift, and go to state 35
+    READ      shift, and go to state 36
+    WRITE     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    IDENT     shift, and go to state 39
+
+    $default  reduce using rule 21 (stmt1)
+
+    stmt        go to state 40
+    stmt1       go to state 147
+    asn_stmt    go to state 42
+    if_stmt     go to state 43
+    while_stmt  go to state 44
+    do_stmt     go to state 45
+    read_stmt   go to state 46
+    write_stmt  go to state 47
+    cont_stmt   go to state 48
+    ret_stmt    go to state 49
+    var         go to state 50
+
+
+State 134
+
+   23 if_stmt: IF bool_expr THEN stmt1 else_stmt . ENDIF
+
+    ENDIF  shift, and go to state 148
+
+
+State 135
+
+   37 or_expr: OR and_expr or_expr .
+
+    $default  reduce using rule 37 (or_expr)
+
+
+State 136
+
+   40 and_expr1: AND rel_expr and_expr1 .
+
+    $default  reduce using rule 40 (and_expr1)
+
+
+State 137
+
+   55 expr1: ADD multi_expr expr1 .
+
+    $default  reduce using rule 55 (expr1)
+
+
+State 138
+
+   56 expr1: SUB multi_expr expr1 .
+
+    $default  reduce using rule 56 (expr1)
+
+
+State 139
+
+   59 multi_expr1: MULT term multi_expr1 .
+
+    $default  reduce using rule 59 (multi_expr1)
+
+
+State 140
+
+   60 multi_expr1: DIV term multi_expr1 .
+
+    $default  reduce using rule 60 (multi_expr1)
+
+
+State 141
+
+   61 multi_expr1: MOD term multi_expr1 .
+
+    $default  reduce using rule 61 (multi_expr1)
+
+
+State 142
+
+   26 while_stmt: WHILE bool_expr BEGINLOOP stmt1 ENDLOOP .
+
+    $default  reduce using rule 26 (while_stmt)
+
+
+State 143
+
+   27 do_stmt: DO BEGINLOOP stmt1 ENDLOOP WHILE . bool_expr
+
+    TRUE     shift, and go to state 52
+    FALSE    shift, and go to state 53
+    L_PAREN  shift, and go to state 54
+    NUMBER   shift, and go to state 28
+    IDENT    shift, and go to state 55
+    SUB      shift, and go to state 56
+    NOT      shift, and go to state 57
+
+    bool_expr   go to state 149
+    and_expr    go to state 59
+    rel_expr    go to state 60
+    rel_expr1   go to state 61
+    expr        go to state 62
+    multi_expr  go to state 63
+    term        go to state 64
+    term2       go to state 65
+    var         go to state 66
+    number      go to state 67
+
+
+State 144
+
+   29 r_stmt: COMMA var r_stmt .
+
+    $default  reduce using rule 29 (r_stmt)
+
+
+State 145
+
+   32 w_stmt: COMMA var w_stmt .
+
+    $default  reduce using rule 32 (w_stmt)
+
+
+State 146
+
+   69 term3: expr COMMA term3 .
+
+    $default  reduce using rule 69 (term3)
+
+
+State 147
+
+   24 else_stmt: ELSE stmt1 .
+
+    $default  reduce using rule 24 (else_stmt)
+
+
+State 148
+
+   23 if_stmt: IF bool_expr THEN stmt1 else_stmt ENDIF .
+
+    $default  reduce using rule 23 (if_stmt)
+
+
+State 149
+
+   27 do_stmt: DO BEGINLOOP stmt1 ENDLOOP WHILE bool_expr .
+
+    $default  reduce using rule 27 (do_stmt)
